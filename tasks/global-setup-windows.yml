@@ -1,17 +1,17 @@
 ---
-- name: (Windows) Create .gitlab-runner dir
+- name: "(Windows) Create .gitlab-runner dir"
   ansible.windows.win_file:
     path: "{{ gitlab_runner_config_file_location }}"
     state: directory
 
-- name: (Windows) Ensure config.toml exists
+- name: "(Windows) Ensure config.toml exists"
   ansible.windows.win_file:
     path: "{{ gitlab_runner_config_file }}"
     state: touch
     modification_time: preserve
     access_time: preserve
 
-- name: (Windows) Set concurrent option
+- name: "(Windows) Set concurrent option"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^(\s*)concurrent =.*
@@ -23,7 +23,7 @@
     - restart_gitlab_runner_macos
     - restart_gitlab_runner_windows
 
-- name: (Windows) Set check_interval option
+- name: "(Windows) Set check_interval option"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^check_interval =.*
@@ -35,32 +35,32 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_windows
 
-- name: (Windows) Add listen_address to config
+- name: "(Windows) Add listen_address to config"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^listen_address =.*
     line: listen_address = "{{ gitlab_runner_listen_address }}"
     insertafter: \s*concurrent.*
     state: present
-  when: gitlab_runner_listen_address | length > 0  # Ensure value is set
+  when: gitlab_runner_listen_address | length > 0 # Ensure value is set
   notify:
     - restart_gitlab_runner
     - restart_gitlab_runner_windows
 
-- name: (Windows) Add sentry dsn to config
+- name: "(Windows) Add sentry dsn to config"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^sentry_dsn =.*
     line: sentry_dsn = "{{ gitlab_runner_sentry_dsn }}"
     insertafter: \s*concurrent.*
     state: present
-  when: gitlab_runner_sentry_dsn | length > 0  # Ensure value is set
+  when: gitlab_runner_sentry_dsn | length > 0 # Ensure value is set
   notify:
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
     - restart_gitlab_runner_windows
 
-- name: (Windows) Add session server listen_address to config
+- name: "(Windows) Add session server listen_address to config"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^(\s+)listen_address =
@@ -72,7 +72,7 @@
     - restart_gitlab_runner_macos
     - restart_gitlab_runner_windows
 
-- name: (Windows) Add session server advertise_address to config
+- name: "(Windows) Add session server advertise_address to config"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^\s*advertise_address =
@@ -84,7 +84,7 @@
     - restart_gitlab_runner_macos
     - restart_gitlab_runner_windows
 
-- name: (Windows) Add session server session_timeout to config
+- name: "(Windows) Add session server session_timeout to config"
   community.windows.win_lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^\s*session_timeout =

@@ -1,5 +1,5 @@
 ---
-- name: List configured runners as json
+- name: "List configured runners as json"
   ansible.windows.win_command: "{{ gitlab_runner_executable }} --log-format json list"
   args:
     chdir: "{{ gitlab_runner_config_file_location }}"
@@ -7,11 +7,11 @@
   changed_when: false
   check_mode: false
 
-- name: Initialze runner list
+- name: "Initialze runner list"
   ansible.builtin.set_fact:
     registered_gitlab_runner_names: []
 
-- name: Create list of configured runners
+- name: "Create list of configured runners"
   ansible.builtin.set_fact:
     registered_gitlab_runner_names: "{{ registered_gitlab_runner_names + [json_item['msg']] }}"
   vars:
@@ -19,6 +19,6 @@
   loop: "{{ registered_runners_json_result.stderr_lines }}"
   when: "'Executor' in json_item"
 
-- name: Print registered runners
+- name: "Print registered runners"
   ansible.builtin.debug:
     var: registered_gitlab_runner_names

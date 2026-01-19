@@ -1,24 +1,24 @@
 ---
 gitlab_runner_runners:
-  - name: vagrant-shell
+  - name: "vagrant-shell"
     executor: shell
     tags:
       - node
       - ruby
       - mysql
-  - name: vagrant-shell-sh
+  - name: "vagrant-shell-sh"
     executor: shell
     shell: sh
     tags:
       - sh
-  - name: vagrant-docker
+  - name: "vagrant-docker"
     executor: docker
     docker_image: docker:stable
     tags:
       - node
       - ruby
       - mysql
-  - name: vagrant-docker-cache
+  - name: "vagrant-docker-cache"
     executor: docker
     docker_image: docker:stable
     tags:
@@ -34,7 +34,7 @@ gitlab_runner_runners:
     cache_s3_bucket_name: build-cache-bucket
     cache_s3_insecure: false
 
-  - name: vagrant-docker-cache-gcs
+  - name: "vagrant-docker-cache-gcs"
     executor: docker
     docker_image: docker:stable
     tags:
