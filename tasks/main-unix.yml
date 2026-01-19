@@ -50,8 +50,9 @@
   when: gitlab_runner_config_update_mode == 'by_config_toml'
 
 - name: (Unix) Configure Gitlab Runner via template
-  # become cannot be used with include_task
-  block:
-    - ansible.builtin.include_tasks: template_config/main.yml
   when: gitlab_runner_config_update_mode == 'by_template'
+  # become cannot be used with include_task
   become: "{{ gitlab_runner_system_mode }}"
+  block:
+    - name: (Unix) Load main tasks
+      ansible.builtin.include_tasks: template_config/main.yml
