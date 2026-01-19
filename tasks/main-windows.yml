@@ -1,8 +1,8 @@
 ---
-- name: Install GitLab Runner (Windows)
+- name: "Install GitLab Runner (Windows)"
   ansible.builtin.import_tasks: install-windows.yml
 
-- name: (Windows) Delete runners which were removed in GitLab
+- name: "(Windows) Delete runners which were removed in GitLab"
   ansible.windows.win_command: "{{ gitlab_runner_executable }} verify --delete"
   args:
     chdir: "{{ gitlab_runner_config_file_location }}"
@@ -10,10 +10,10 @@
   changed_when: '"Updated " in verified_runners.stderr'
   check_mode: false
 
-- name: List configured runners
+- name: "List configured runners"
   ansible.builtin.import_tasks: list-configured-runners-windows.yml
 
-- name: (Windows) Register GitLab Runner
+- name: "(Windows) Register GitLab Runner"
   ansible.builtin.include_tasks: register-runner-windows.yml
   vars:
     actual_gitlab_runner_name: "{{ gitlab_runner.name | default(ansible_hostname + '-' + gitlab_runner_index | string) }}"
@@ -23,25 +23,25 @@
     index_var: gitlab_runner_index
     loop_var: gitlab_runner
 
-- name: Unregister runners which are not longer configured
+- name: "Unregister runners which are not longer configured"
   ansible.builtin.include_tasks: unregister-runner-if-not-longer-configured.yml
   when: gitlab_unregister_runner_executors_which_are_not_longer_configured
 
-- name: (Windows) Set global options
+- name: "(Windows) Set global options"
   ansible.builtin.import_tasks: global-setup-windows.yml
   when: gitlab_runner_config_update_mode == 'by_config_toml' or
     gitlab_runner_config_update_mode == 'by_registering'
 
-- name: (Windows) Configure GitLab Runner
+- name: "(Windows) Configure GitLab Runner"
   ansible.builtin.include_tasks: config-runners-windows.yml
   when: gitlab_runner_config_update_mode == 'by_config_toml'
 
-- name: (Windows) Start GitLab Runner
+- name: "(Windows) Start GitLab Runner"
   ansible.windows.win_command: "{{ gitlab_runner_executable }} start"
   args:
     chdir: "{{ gitlab_runner_config_file_location }}"
   when: gitlab_runner_windows_start_runner
 
-- name: (Windows) Configure Gitlab Runner via template
+- name: "(Windows) Configure Gitlab Runner via template"
   ansible.builtin.include_tasks: template_config/main.yml
   when: gitlab_runner_config_update_mode == 'by_template'

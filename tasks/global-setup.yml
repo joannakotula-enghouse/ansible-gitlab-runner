@@ -1,5 +1,5 @@
 ---
-- name: Create .gitlab-runner dir
+- name: "Create .gitlab-runner dir"
   ansible.builtin.file:
     path: "{{ gitlab_runner_config_file_location }}"
     state: directory
@@ -7,7 +7,7 @@
   become: "{{ gitlab_runner_system_mode }}"
   when: not gitlab_runner_container_install
 
-- name: Ensure config.toml exists
+- name: "Ensure config.toml exists"
   ansible.builtin.file:
     path: "{{ gitlab_runner_config_file }}"
     state: touch
@@ -16,7 +16,7 @@
     mode: "0600"
   become: "{{ gitlab_runner_system_mode }}"
 
-- name: Set concurrent option
+- name: "Set concurrent option"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^(\s*)concurrent =
@@ -29,7 +29,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Set check_interval option
+- name: "Set check_interval option"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^check_interval =
@@ -42,7 +42,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add listen_address to config
+- name: "Add listen_address to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^listen_address =
@@ -56,7 +56,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add log_format to config
+- name: "Add log_format to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^log_format =
@@ -70,7 +70,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add log_level to config
+- name: "Add log_level to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^log_level =
@@ -84,7 +84,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add sentry dsn to config
+- name: "Add sentry dsn to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^sentry_dsn =
@@ -98,7 +98,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add session server listen_address to config
+- name: "Add session server listen_address to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^(\s+)listen_address =
@@ -111,7 +111,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add session server advertise_address to config
+- name: "Add session server advertise_address to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^\s*advertise_address =
@@ -124,7 +124,7 @@
     - restart_gitlab_runner
     - restart_gitlab_runner_macos
 
-- name: Add session server session_timeout to config
+- name: "Add session server session_timeout to config"
   ansible.builtin.lineinfile:
     dest: "{{ gitlab_runner_config_file }}"
     regexp: ^\s*session_timeout =

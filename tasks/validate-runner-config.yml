@@ -6,7 +6,7 @@
     fail_msg: "DEPRECATED setting for runner {{ actual_gitlab_runner_name }}: {{ setting.name }} - {{ setting.message }}"
     quiet: true
   loop:
-    - name: pre_clone_script
+    - name: "pre_clone_script"
       message: use pre_get_sources_script instead
   loop_control:
     label: "{{ setting.name }}"

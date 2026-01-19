@@ -1,16 +1,16 @@
 ---
-- name: Get existing config.toml
+- name: "Get existing config.toml"
   ansible.builtin.slurp:
     src: "{{ gitlab_runner_config_file }}"
   register: runner_config_file
   become: "{{ gitlab_runner_system_mode }}"
 
-- name: Get pre-existing runner configs
+- name: "Get pre-existing runner configs"
   ansible.builtin.set_fact:
     runner_configs: "{{ (runner_config_file['content'] | b64decode).split('[[runners]]\n') }}"
   no_log: "{{ gitlab_runner_no_log_secrets | default(omit) }}"
 
-- name: Create temporary directory
+- name: "Create temporary directory"
   ansible.builtin.tempfile:
     state: directory
     suffix: gitlab-runner-config
@@ -18,7 +18,7 @@
   check_mode: false
   changed_when: false
 
-- name: Write config section for each runner
+- name: "Write config section for each runner"
   vars:
     conf_name_prefix: "conf[{{ (runner_config_index | int) + 1 }}/{{ runner_configs | length }}]:"
   ansible.builtin.include_tasks: config-runner.yml
@@ -28,7 +28,7 @@
     loop_var: runner_config
   no_log: "{{ gitlab_runner_no_log_secrets | default(omit) }}"
 
-- name: Assemble new config.toml
+- name: "Assemble new config.toml"
   ansible.builtin.assemble:
     src: "{{ temp_runner_config_dir.path }}"
     dest: "{{ gitlab_runner_config_file }}"
